@@ -2,15 +2,37 @@ use macroquad::prelude::*;
 
 #[macroquad::main("BasicShapes")]
 async fn main() {
-    loop {
-        clear_background(RED);
 
-        draw_line(40.0, 40.0, 100.0, 200.0, 15.0, BLUE);
-        draw_rectangle(screen_width() / 2.0 - 60.0, 100.0, 120.0, 60.0, GREEN);
-        draw_circle(screen_width() - 30.0, screen_height() - 30.0, 15.0, YELLOW);
+   let mut player_x = 100.0;
+   let mut player_y = 100.0;
+   
+   let fren_img = Image::from_file_with_format(include_bytes!("../resource/playersprite.png"), None);
+   let rect = Rect::new(40.0, 0.0, 80.0, 160.0);
+   let subfren = fren_img.sub_image(rect);
 
-        draw_text("IT WORKS!", 20.0, 20.0, 30.0, DARKGRAY);
+   let fren_texture = Texture2D::from_image(&subfren);
+   fren_texture.update(&subfren);
 
+   loop {
+        clear_background(GREEN);
+
+
+        let delta = get_frame_time();
+
+        if is_key_down(KeyCode::Right){
+            player_x += 100.0 * delta;
+        }
+        if is_key_down(KeyCode::Left){
+            player_x -= 100.0 * delta;
+        }
+        if is_key_down(KeyCode::Down){
+            player_y += 100.0 * delta;
+        }
+        if is_key_down(KeyCode::Up){
+            player_y -= 100.0 * delta;
+        }
+        
+        draw_texture(fren_texture, player_x, player_y, WHITE);
         next_frame().await
     }
 }
