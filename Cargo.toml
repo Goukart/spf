@@ -2,7 +2,7 @@
 name = "spf"
 version = "0.0.1"
 edition = "2021"
-authors = ["ben"] # ["Alice <a@example.com>", "Bob <b@example.com>"]
+authors = ["ben aka goukart", "ralf aka sirtunahead"] # ["Alice <a@example.com>", "Bob <b@example.com>"]
 publish = false
 
 
