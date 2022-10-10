@@ -1,9 +1,12 @@
 use macroquad::prelude::*;
 
 const AVATAR_HEIGHT: f32 = 25.;
-const AVATAR_BASE: f32 = 22.;
 
-const MOVE_SPEED: f32 = 0.1;
+// const MOVE_SPEED: f32 = 0.1;
+
+
+// ToDo, make CI and CD
+// Make Github Pages auto compile all that shit and make it pretty and playable
 
 #[derive(Debug)]
 pub struct Avatar {
@@ -26,6 +29,7 @@ impl Avatar {
 
     fn draw(&self) {
         draw_cube_wires(self.pos, vec3(2., 2., 2.), DARKBLUE);
+        draw_text(self.name.as_str(), self.pos.x, self.pos.y, 1., BLUE);
     }
 
     pub fn push(&mut self, direction: Vec2) {
@@ -193,7 +197,7 @@ async fn main() {
 
         clear_background(LIGHTGRAY);
 
-        // for drawable ?
+        // for drawable -> type? linke an interface, so not a real "class". Maybe with #[derive(drawable)]
         blue.draw();
         /*
         for bullet in bullets.iter() {
