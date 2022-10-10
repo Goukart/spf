@@ -14,7 +14,6 @@ async fn main() {
     let mut time = get_time();
 
     let mut right = true;
-    let mut left = false;
     loop {
         clear_background(BLACK);
         let delta = get_frame_time();
@@ -22,12 +21,10 @@ async fn main() {
         if is_key_down(KeyCode::Right) {
             player_x += 100.0 * delta;
             right = false;
-            left = true;
         }
         if is_key_down(KeyCode::Left) {
             player_x -= 100.0 * delta;
             right = true;
-            left = false;
         }
         if is_key_down(KeyCode::Down) {
             player_y += 100.0 * delta;
@@ -44,16 +41,16 @@ async fn main() {
             if right {
                 img_x = 40.0;
             }
-            if left {
+            else {
                 img_x = 520.0;
             }
-            
+
         } else {
             if time <= 0.1 {
                 if right {
                     img_x = 40.0;
                 }
-                if left {
+                else{
                     img_x = 520.0;
                 }
             }
@@ -62,7 +59,7 @@ async fn main() {
                     img_x = 200.0;
                 }
 
-                if left {
+                else {
                     img_x = 680.0;
                 }
             }
@@ -71,7 +68,7 @@ async fn main() {
                 if right {
                     img_x = 360.0;
                 }
-                if left {
+                else{
                     img_x = 840.0;
                 }
             }
