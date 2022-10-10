@@ -93,7 +93,6 @@ async fn main() {
             clear_background(LIGHTGRAY);
             let mut text = "You Win!. Press [enter] to play again.";
             let font_size = 30.;
-
             if asteroids.len() > 0 {
                 text = "Game Over. Press [enter] to play again.";
             }
