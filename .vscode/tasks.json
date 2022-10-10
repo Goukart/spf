@@ -1,0 +1,31 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build web release",
+			"type": "cargo",
+			"command": "build",
+			"args": [
+				"--release", // to build it optimized
+				"--target",
+				"wasm32-unknown-unknown" // muss das so? mega hässlich; warum 32?
+			],
+			"group": "build"
+		},
+		{
+			"label": "export web release",
+			"type": "shell",
+			"command": "cp",
+			"args": [
+				"target/wasm32-unknown-unknown/release/spf.wasm", // maybe '*.wasm'?
+				"release/web"
+			],
+			// "problemMatcher": ["$build"]
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"dependsOn":["build web release"]
+		}
+	]
+}
