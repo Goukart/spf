@@ -40,26 +40,21 @@ async fn main() {
         {
             if right {
                 img_x = 40.0;
-            }
-            else {
+            } else {
                 img_x = 520.0;
             }
-
         } else {
             if time <= 0.1 {
                 if right {
                     img_x = 40.0;
-                }
-                else{
+                } else {
                     img_x = 520.0;
                 }
             }
             if time > 0.2 && time < 0.3 {
                 if right {
                     img_x = 200.0;
-                }
-
-                else {
+                } else {
                     img_x = 680.0;
                 }
             }
@@ -67,8 +62,7 @@ async fn main() {
             if time > 0.3 {
                 if right {
                     img_x = 360.0;
-                }
-                else{
+                } else {
                     img_x = 840.0;
                 }
             }
