@@ -2,13 +2,17 @@
 name = "spf"
 version = "0.0.1"
 edition = "2021"
-authors = ["ben aka goukart", "ralf aka sirtunahead"] # ["Alice <a@example.com>", "Bob <b@example.com>"]
+authors = ["ben aka goukart", "ralf aka sirtunahead"]
 publish = false
 
 
 [dependencies]
-macroquad = "0.3"
+bevy = "0.8.1"
+bevy_rapier3d = { version = "0.17.0", features = [ "simd-stable", "debug-render" ] }
+# rapier3d = { version = "0.15.0", features = [ "simd-stable" ] }
 
-
-[profile.dev.package.'*']
+[profile.dev.package.rapier3d]
 opt-level = 3
+
+[profile.release]
+codegen-units = 1

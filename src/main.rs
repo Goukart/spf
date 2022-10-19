@@ -1,81 +1,54 @@
-use macroquad::prelude::*;
+use bevy::{prelude::*, render::color::HexColorError};
+use bevy_rapier3d::prelude::*;
+// use avatar::Avatar;
+// mod avatar;
+mod bullet;
 
-#[macroquad::main("spf")]
 
-async fn main() {
-    let mut player_x = 100.0;
-    let mut player_y = 100.0;
+fn main() {
+    /*
+    let mut blue = avatar::Avatar::new(
+        Color::MIDNIGHT_BLUE,
+        String::from("blue"),
+        Vec3 { x: 1., y: 1., z: 1. },
+    );*/
 
-    let mut img_x = 40.0;
+    App::new()
+        .add_plugins(DefaultPlugins)
+        .add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
+        .add_plugin(RapierDebugRenderPlugin::default())
+        .add_startup_system(setup_graphics)
+        .add_startup_system(setup_physics)
+        .add_system(print_ball_altitude)
+        .run();
+}
 
-    let fren_img =
-        Image::from_file_with_format(include_bytes!("../resource/playersprite.png"), None);
+fn setup_graphics(mut commands: Commands) {
+    // Add a camera so we can see the debug-render.
+    commands.spawn_bundle(Camera3dBundle {
+        transform: Transform::from_xyz(0.0, 2.0, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
+        ..Default::default()
+    });
+}
 
-    let mut time = get_time();
+fn setup_physics(mut commands: Commands) {
+    /* Create the ground. */
+    commands
+        .spawn()
+        .insert(Collider::cuboid(100.0, 0.1, 100.0))
+        .insert_bundle(TransformBundle::from(Transform::from_xyz(0.0, -2.0, 0.0)));
 
-    let mut right = true;
-    loop {
-        clear_background(BLACK);
-        let delta = get_frame_time();
+    /* Create the bouncing ball. */
+    commands
+        .spawn()
+        .insert(RigidBody::Dynamic)
+        .insert(Collider::ball(0.5))
+        .insert(Restitution::coefficient(0.7))
+        .insert_bundle(TransformBundle::from(Transform::from_xyz(0.0, 4.0, 0.0)));
+}
 
-        if is_key_down(KeyCode::Right) {
-            player_x += 100.0 * delta;
-            right = false;
-        }
-        if is_key_down(KeyCode::Left) {
-            player_x -= 100.0 * delta;
-            right = true;
-        }
-        if is_key_down(KeyCode::Down) {
-            player_y += 100.0 * delta;
-        }
-        if is_key_down(KeyCode::Up) {
-            player_y -= 100.0 * delta;
-        }
-
-        if is_key_down(KeyCode::Up) == false
-            && is_key_down(KeyCode::Down) == false
-            && is_key_down(KeyCode::Left) == false
-            && is_key_down(KeyCode::Right) == false
-        {
-            if right {
-                img_x = 40.0;
-            } else {
-                img_x = 520.0;
-            }
-        } else {
-            if time <= 0.1 {
-                if right {
-                    img_x = 40.0;
-                } else {
-                    img_x = 520.0;
-                }
-            }
-            if time > 0.2 && time < 0.3 {
-                if right {
-                    img_x = 200.0;
-                } else {
-                    img_x = 680.0;
-                }
-            }
-
-            if time > 0.3 {
-                if right {
-                    img_x = 360.0;
-                } else {
-                    img_x = 840.0;
-                }
-            }
-        }
-        time = get_time();
-        time = time % 0.4;
-        let rect = Rect::new(img_x, 0.0, 80.0, 160.0);
-        let subimage = fren_img.sub_image(rect);
-
-        let fren_texture = Texture2D::from_image(&subimage);
-        fren_texture.update(&subimage);
-        draw_texture(fren_texture, player_x, player_y, WHITE);
-
-        next_frame().await
+fn print_ball_altitude(positions: Query<&Transform, With<RigidBody>>) {
+    for transform in positions.iter() {
+        println!("Ball altitude: {}", transform.translation.y);
     }
 }
